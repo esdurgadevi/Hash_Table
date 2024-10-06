@@ -153,3 +153,241 @@ class Solution {
 }
 ```
 
+### 3046. Split the Array
+[Leetcode link](https://leetcode.com/problems/split-the-array/?envType=problem-list-v2&envId=hash-table&status=TO_DO&difficulty=EASY)
+<br>
+You are given an integer array nums of even length. You have to split the array into two parts nums1 and nums2 such that:
+nums1.length == nums2.length == nums.length / 2.
+nums1 should contain distinct elements.
+nums2 should also contain distinct elements.
+Return true if it is possible to split the array, and false otherwise.
+
+Example 1:
+Input: nums = [1,1,2,2,3,4]
+Output: true
+Explanation: One of the possible ways to split nums is nums1 = [1,2,3] and nums2 = [1,2,4].
+
+Example 2:
+Input: nums = [1,1,1,1]
+Output: false
+Explanation: The only possible way to split nums is nums1 = [1,1] and nums2 = [1,1]. Both nums1 and nums2 do not contain distinct elements. Therefore, we return false.
+
+Constraints:
+1 <= nums.length <= 100
+nums.length % 2 == 0 
+1 <= nums[i] <= 100
+
+```java
+class Solution {
+    public boolean isPossibleToSplit(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+        }
+        int flag = 0;
+        for(int x:map.keySet())
+        {
+            if(map.get(x)>2) flag = 1;
+        }
+        return flag==0;
+    }
+}
+```
+- In this code if we separate the array by half then the tow half will contain only the unique element then we return true other wise we return false.
+- SO the idea is if any one element will qppear more than two times then thre must ne repeatation appear. Example 1 2 3 1 1 4 then we separate [1 2 1] [1 3 4] so repetation will occur.
+- so first we find each elements frequency then we check if any one of the elemnt have more than three times that time we return false.   
+
+### 2965. Find Missing and Repeated Values
+[Leetcode link](https://leetcode.com/problems/find-missing-and-repeated-values/description/?envType=problem-list-v2&envId=hash-table&status=TO_DO&difficulty=EASY)
+<br>
+You are given a 0-indexed 2D integer matrix grid of size n * n with values in the range [1, n2]. Each integer appears exactly once except a which appears twice and b which is missing. The task is to find the repeating and missing numbers a and b.
+Return a 0-indexed integer array ans of size 2 where ans[0] equals to a and ans[1] equals to b.
+ 
+Example 1:
+Input: grid = [[1,3],[2,2]]
+Output: [2,4]
+Explanation: Number 2 is repeated and number 4 is missing so the answer is [2,4].
+
+Example 2:
+Input: grid = [[9,1,7],[8,9,2],[3,4,6]]
+Output: [9,5]
+Explanation: Number 9 is repeated and number 5 is missing so the answer is [9,5].
+ 
+Constraints:
+2 <= n == grid.length == grid[i].length <= 50
+1 <= grid[i][j] <= n * n
+For all x that 1 <= x <= n * n there is exactly one x that is not equal to any of the grid members.
+For all x that 1 <= x <= n * n there is exactly one x that is equal to exactly two of the grid members.
+For all x that 1 <= x <= n * n except two of them there is exatly one pair of i, j that 0 <= i, j <= n - 1 and grid[i][j] == x.
+
+```java
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid) {
+        boolean[] ans = new boolean[grid.length*grid.length+1];
+        int sum = 0;
+        int[] res = new int[2];
+        for(int i=0;i<grid.length;i++)
+        {
+            for(int j=0;j<grid[0].length;j++)
+            {
+                if(ans[grid[i][j]]==true) res[0]=grid[i][j];
+                else 
+                {
+                    ans[grid[i][j]]=true;
+                    sum+=grid[i][j];
+                }
+            }
+        }
+        int n = grid.length*grid.length;
+        res[1] = (n*(n+1)/2)-sum;
+        return res;
+    }
+}
+```
+- the n*n grid will given that grid will contains the number from 1 to n*n but the one number is repeated and the another number is missing we find these two numbers from the grid.
+- So we using the bool array of size n*n that will assign true if the value will accur. So we check if the grid[i][j] will true then it is the repeated value because it already appear so added to the result array.
+- In corrosponding to we find the sum of the grids excluding the repeated value.
+- So the total sum for the grid will must n*(n+1)/2 so we subtract our sum from that value we get the missing element.
+### 2351. First Letter to Appear Twice
+[Leetcode link](https://leetcode.com/problems/first-letter-to-appear-twice/?envType=problem-list-v2&envId=hash-table&status=TO_DO&difficulty=EASY)
+<br>
+Given a string s consisting of lowercase English letters, return the first letter to appear twice.
+Note:
+A letter a appears twice before another letter b if the second occurrence of a is before the second occurrence of b.
+s will contain at least one letter that appears twice.
+
+Example 1:
+Input: s = "abccbaacz"
+Output: "c"
+Explanation:
+The letter 'a' appears on the indexes 0, 5 and 6.
+The letter 'b' appears on the indexes 1 and 4.
+The letter 'c' appears on the indexes 2, 3 and 7.
+The letter 'z' appears on the index 8.
+The letter 'c' is the first letter to appear twice, because out of all the letters the index of its second occurrence is the smallest.
+
+Example 2:
+Input: s = "abcdd"
+Output: "d"
+Explanation:
+The only letter that appears twice is 'd' so we return 'd'.
+
+Constraints:
+2 <= s.length <= 100
+s consists of lowercase English letters.
+s has at least one repeated letter.
+
+```java
+class Solution {
+    public char repeatedCharacter(String s) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            if(map.containsKey(s.charAt(i))) return s.charAt(i);
+            else map.put(s.charAt(i),i);
+        }
+        return 'a';
+    }
+}
+```
+- in this code we return the twice appear character first.
+- So we create a hashmap and we put the character one by one from the string if the character is already present in the string that time we return that character because that character is the first repeating character.
+
+### 2248. Intersection of Multiple Arrays
+[Leetcode link](https://leetcode.com/problems/intersection-of-multiple-arrays/?envType=problem-list-v2&envId=hash-table&status=TO_DO&difficulty=EASY)
+<br>
+Given a 2D integer array nums where nums[i] is a non-empty array of distinct positive integers, return the list of integers that are present in each array of nums sorted in ascending order.
+
+Example 1:
+Input: nums = [[3,1,2,4,5],[1,2,3,4],[3,4,5,6]]
+Output: [3,4]
+Explanation: 
+The only integers present in each of nums[0] = [3,1,2,4,5], nums[1] = [1,2,3,4], and nums[2] = [3,4,5,6] are 3 and 4, so we return [3,4].
+
+Example 2:
+Input: nums = [[1,2,3],[4,5,6]]
+Output: []
+Explanation: 
+There does not exist any integer present both in nums[0] and nums[1], so we return an empty list [].
+
+Constraints:
+1 <= nums.length <= 1000
+1 <= sum(nums[i].length) <= 1000
+1 <= nums[i][j] <= 1000
+All the values of nums[i] are unique.
+
+```java
+class Solution {
+    public List<Integer> intersection(int[][] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            for(int j=0;j<nums[i].length;j++)
+            {
+                map.put(nums[i][j],map.getOrDefault(nums[i][j],0)+1);
+            }
+        }
+        ArrayList<Integer> ans = new ArrayList<>(map.keySet());
+        Collections.sort(ans);
+        ArrayList<Integer> res = new ArrayList<>();
+        for(int x:ans)
+        {
+            if(map.get(x)>=nums.length) res.add(x);
+        }
+        return res;
+    }
+}
+```
+- In this code we return the integers which are present all the rows of the array.
+- we add all the elements count to the hashmap using get or default value another one advantage is the each row contains the unique elements.
+- then we return the res in asending order so what we do is we add the maps key value to the array list and sort the array list first.
+- then we check each keys value if the value is greater than the rows count then that will added to the result list finally we return the result.
+
+### 3120. Count the Number of Special Characters I
+[Leetcode link](https://leetcode.com/problems/count-the-number-of-special-characters-i/?envType=problem-list-v2&envId=hash-table&status=TO_DO&difficulty=EASY)
+<br>
+You are given a string word. A letter is called special if it appears both in lowercase and uppercase in word.
+Return the number of special letters in word.
+ 
+Example 1:
+Input: word = "aaAbcBC"
+Output: 3
+
+Explanation:
+The special characters in word are 'a', 'b', and 'c'.
+
+Example 2:
+Input: word = "abc"
+Output: 0
+Explanation:
+No character in word appears in uppercase.
+
+Example 3:
+Input: word = "abBCab"
+Output: 1
+Explanation:
+The only special character in word is 'b'.
+ 
+Constraints:
+1 <= word.length <= 50
+word consists of only lowercase and uppercase English letters.
+
+```java
+class Solution {
+    public int numberOfSpecialChars(String word) {
+        int c = 0;
+        for(char i='a';i<='z';i++)
+        {
+            String s = Character.toString(i);
+            if(word.contains(s.toUpperCase()) && word.contains(s)) c++;
+        }
+        return c;
+    }
+}
+```
+- In this code we return the count of the character which are presen tin the string in both upper and lowercase alphabet.
+- So i travel through a to z then each character i chech wheather the lowercase i and the uppercase i will present in the string or not if it is present then we increase the c.
+- Finaly we return the c.
+
+
