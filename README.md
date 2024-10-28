@@ -389,5 +389,51 @@ class Solution {
 - In this code we return the count of the character which are presen tin the string in both upper and lowercase alphabet.
 - So i travel through a to z then each character i chech wheather the lowercase i and the uppercase i will present in the string or not if it is present then we increase the c.
 - Finaly we return the c.
+### 2501. Longest Square Streak in an Array
+[Leetcode link](https://leetcode.com/problems/longest-square-streak-in-an-array/?envType=daily-question&envId=2024-10-28)
+<br>
+You are given an integer array nums. A subsequence of nums is called a square streak if: The length of the subsequence is at least 2, and after sorting the subsequence, each element (except the first element) is the square of th previous number. Return the length of the longest square streak in nums, or return -1 if there is no square streak. A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
 
+Example 1:
+Input: nums = [4,3,6,16,8,2]
+Output: 3
+Explanation: Choose the subsequence [4,16,2]. After sorting it, it becomes [2,4,16].
+- 4 = 2 * 2.
+- 16 = 4 * 4.
+Therefore, [4,16,2] is a square streak.
+It can be shown that every subsequence of length 4 is not a square streak.
 
+Example 2:
+Input: nums = [2,3,5,6,7]
+Output: -1
+Explanation: There is no square streak in nums so return -1.
+ 
+Constraints:
+2 <= nums.length <= 105
+2 <= nums[i] <= 105
+
+```java
+class Solution {
+    public int longestSquareStreak(int[] nums) {
+        Arrays.sort(nums);
+        int max = 0;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=nums.length-1;i>=0;i--)
+        {
+            if(map.containsKey(nums[i]*nums[i]))
+            {
+                int val = map.get(nums[i]*nums[i])+1;
+                max = Math.max(max,val);
+                map.put(nums[i],val);
+            }
+            else map.put(nums[i],1);
+        }
+        if(max==0) max = -1;
+        return max;
+    }
+}
+```
+- In this code we find the longest subsequence with continous square values of previous one.
+- So first i sor the array and then travel through the last element if the current elements square is already present in the array that time we get the value and put the curent value.
+- If it is not present we put the nums value.
+- finally we return max. max will be updated each val time.
