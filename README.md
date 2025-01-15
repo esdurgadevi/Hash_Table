@@ -437,3 +437,81 @@ class Solution {
 - So first i sor the array and then travel through the last element if the current elements square is already present in the array that time we get the value and put the curent value.
 - If it is not present we put the nums value.
 - finally we return max. max will be updated each val time.
+### 3223. Minimum Length of String After Operations
+[Leetcode link](https://leetcode.com/problems/minimum-length-of-string-after-operations/description/?envType=daily-question&envId=2025-01-13)
+<br>
+You are given a string s.
+
+You can perform the following process on s any number of times:
+
+Choose an index i in the string such that there is at least one character to the left of index i that is equal to s[i], and at least one character to the right that is also equal to s[i].
+Delete the closest character to the left of index i that is equal to s[i].
+Delete the closest character to the right of index i that is equal to s[i].
+Return the minimum length of the final string s that you can achieve.
+
+ 
+
+Example 1:
+
+Input: s = "abaacbcbb"
+
+Output: 5
+
+Explanation:
+We do the following operations:
+
+Choose index 2, then remove the characters at indices 0 and 3. The resulting string is s = "bacbcbb".
+Choose index 3, then remove the characters at indices 0 and 5. The resulting string is s = "acbcb".
+Example 2:
+
+Input: s = "aa"
+
+Output: 2
+
+Explanation:
+We cannot perform any operations, so we return the length of the original string.
+
+ 
+
+Constraints:
+
+1 <= s.length <= 2 * 105
+s consists only of lowercase English letters.
+
+```java
+class Solution {
+    public int minimumLength(String s) {
+        int c = 0;
+        int[] right = new int[26];
+        int[] left = new int[26];
+        for(int i=0;i<s.length();i++)
+        {
+            right[s.charAt(i)-'a']++;
+        }
+        left[s.charAt(0)-'a'] += 1;
+        right[s.charAt(0)-'a'] -= 1;
+        for(int i=1;i<s.length();i++)
+        {
+            right[s.charAt(i)-'a']--;
+            for(int j=0;j<26;j++)
+            {
+                if((left[j]>=1 && right[j]>=1) && (j==s.charAt(i)-'a')) 
+                {
+                    c++;
+                    left[j]--;
+                    right[j]--;
+                }
+            }
+            left[s.charAt(i)-'a']++;
+        }
+        System.out.print(c);
+        return s.length()-(c*2);
+    }
+}
+```
+- In this code we find left and right count of the current character initailly all are in the right side.
+- So find right character then for the zeroth position increase the left count of the character as weill as decrease the right count of the character.
+- then travel through each element we remove the current characters left and right occurence.
+- So for the index 1 that is the current index did not add both left and right side now that count only in the right side so we decrease then travel with 0 to 26 which character is equal to the current character as well as that characters count is more than one in both left and right side that is left and right hash array. That time increase c it will keep track how many character will remove from string so that will remove from both left and right so remove.
+- Then now the current will be added to the left side of the array so add.
+- Finally the lenght of the whole string and the character count * 2 that will be remove from the string is return.
