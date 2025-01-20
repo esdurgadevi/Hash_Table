@@ -515,3 +515,65 @@ class Solution {
 - So for the index 1 that is the current index did not add both left and right side now that count only in the right side so we decrease then travel with 0 to 26 which character is equal to the current character as well as that characters count is more than one in both left and right side that is left and right hash array. That time increase c it will keep track how many character will remove from string so that will remove from both left and right so remove.
 - Then now the current will be added to the left side of the array so add.
 - Finally the lenght of the whole string and the character count * 2 that will be remove from the string is return.
+### 2661. First Completely Painted Row or Column
+[Leetcodelink](https://leetcode.com/problems/first-completely-painted-row-or-column/description/?envType=daily-question&envId=2025-01-20)
+<br>
+You are given a 0-indexed integer array arr, and an m x n integer matrix mat. arr and mat both contain all the integers in the range [1, m * n].
+
+Go through each index i in arr starting from index 0 and paint the cell in mat containing the integer arr[i].
+
+Return the smallest index i at which either a row or a column will be completely painted in mat.
+
+ 
+
+Example 1:
+![](https://assets.leetcode.com/uploads/2023/01/18/grid1.jpg)
+Input: arr = [1,3,4,2], mat = [[1,4],[2,3]]
+Output: 2
+Explanation: The moves are shown in order, and both the first row and second column of the matrix become fully painted at arr[2].
+Example 2:
+![](https://assets.leetcode.com/uploads/2023/01/18/grid2.jpg)
+Input: arr = [2,8,7,4,1,3,5,6,9], mat = [[3,2,5],[1,4,6],[8,7,9]]
+Output: 3
+Explanation: The second column becomes fully painted at arr[3].
+ 
+
+Constraints:
+
+m == mat.length
+n = mat[i].length
+arr.length == m * n
+1 <= m, n <= 105
+1 <= m * n <= 105
+1 <= arr[i], mat[r][c] <= m * n
+All the integers of arr are unique.
+All the integers of mat are unique.
+
+```java
+class Solution {
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        HashMap<Integer,int[]> map = new HashMap<>();
+        int[] row = new int[mat.length];
+        int[] col = new int[mat[0].length];
+        for(int i=0;i<mat.length;i++)
+        {
+            for(int j=0;j<mat[0].length;j++)
+            {
+                map.put(mat[i][j],new int[]{i,j});
+            }
+        }
+        for(int i=0;i<arr.length;i++)
+        {
+            int[] ans = map.get(arr[i]);
+            row[ans[0]]++;
+            col[ans[1]]++;
+            if(row[ans[0]]>=mat[0].length || col[ans[1]]>=mat.length) return i;
+        }
+        return 0;
+    }
+}
+```
+- First track if the row or coloum is fill by using the frequency array for row and column.
+- Then for know the position first pre compute the position using hash map.
+- then for the each array element take the corrosponding row and column then increase that row and column count then check if the row >= column size beacause it will oppositely increase or check for column then return the curren index i.
+
