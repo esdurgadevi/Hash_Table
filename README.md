@@ -627,3 +627,63 @@ class Solution {
 - So find this we find the good pairs and minus from the bad pairs.
 - For this we rearrange the euation  nums[i]-i != nums[j]-j
 - so take the hashmap to keep track the number then add to the good pair when the map already contain the key.
+### 2342. Max Sum of a Pair With Equal Sum of Digits
+[Leetcode link](https://leetcode.com/problems/max-sum-of-a-pair-with-equal-sum-of-digits/?envType=daily-question&envId=2025-02-12)
+<br>
+You are given a 0-indexed array nums consisting of positive integers. You can choose two indices i and j, such that i != j, and the sum of digits of the number nums[i] is equal to that of nums[j].
+
+Return the maximum value of nums[i] + nums[j] that you can obtain over all possible indices i and j that satisfy the conditions.
+
+ 
+
+Example 1:
+
+Input: nums = [18,43,36,13,7]
+Output: 54
+Explanation: The pairs (i, j) that satisfy the conditions are:
+- (0, 2), both numbers have a sum of digits equal to 9, and their sum is 18 + 36 = 54.
+- (1, 4), both numbers have a sum of digits equal to 7, and their sum is 43 + 7 = 50.
+So the maximum sum that we can obtain is 54.
+Example 2:
+
+Input: nums = [10,12,19,14]
+Output: -1
+Explanation: There are no two numbers that satisfy the conditions, so we return -1.
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+1 <= nums[i] <= 109
+
+```java
+class Solution {
+    public int find(int n)
+    {
+        int c = 0;
+        while(n>0)
+        {
+            c += n%10;
+            n/=10;
+        }
+        return c;
+    }
+    public int maximumSum(int[] nums) {
+        int max = -1;
+        int[] arr = new int[82];
+        Arrays.fill(arr,-1);
+        for(int i=0;i<nums.length;i++)
+        {
+            int digit_sum = find(nums[i]);
+            if(arr[digit_sum]!=-1)
+            {
+                max = Math.max(max,nums[i]+arr[digit_sum]);
+            }
+            arr[digit_sum] = Math.max(arr[digit_sum],nums[i]);
+        }
+        return max;
+    }
+}
+```
+- In this code we find the pair which have both sum of digits equal but we get maximum of them.
+- So create table which have size of 82 because (10 power 9 integer constraint) so every update the value by maximum digit if it is not equal to -1 means it have already one elements so update the final answer.
